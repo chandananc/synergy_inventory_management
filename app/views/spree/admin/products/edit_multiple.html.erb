@@ -22,7 +22,7 @@
         <div class="sidebar-title">
           <span><%= t("sim.catalog") %></span>
         </div>
-        <div id='taxonomy_tree' style=" overflow: auto">
+        <div id='taxonomy_tree' style=" overflow: auto" class="sim_tree">
           <ul><%= render :partial => "taxon", :collection => Spree::Taxon.roots, :locals => {:current_taxon => @taxon} %></ul>
         </div>
       <% end %>
@@ -72,16 +72,11 @@
           <tbody>
             <% @collection.each do |product| %>
               <tr id="<%= dom_id product %>">
-                <td><%= check_box_tag 'product_ids[]', product.id, false, :class => 'product-select' %></td>
-                <td class="has_image"><%= product.images.any? ? link_to(mini_image(product), admin_product_images_url(product)) : link_to('...', admin_product_images_url(product)) %></td>
-                <td><%= best_in_place [:admin,product], :sku, :type => :input, :ok_button => 'OK', :cancel_button => 'x' %><%# product.sku %></td>
-                <td><%= product.name %> 
-                  <br><%= best_in_place [:admin,product], :promo, :type => :input, :ok_button => 'OK', :cancel_button => 'x' %>
-                  <br><%= best_in_place [:admin,product], :comment, :type => :input, :ok_button => 'OK', :cancel_button => 'x' %>
-                </td>
-                <td><%= best_in_place [:admin,product], :tax_category_id, :type => :select, :collection => @tax_categories %></td>
-                <td><%= best_in_place [:admin,product], :price, :type => :input, :ok_button => 'OK', :cancel_button => 'x', :display_with => :number_to_currency, :helper_options => {:unit => ""} %><%# product.price %></td>
-                <td><%= best_in_place [:admin,product], :sale_price, :type => :input, :ok_button => 'OK', :cancel_button => 'x' , :display_with => :number_to_currency, :helper_options => {:unit => ""}%></td>
+                <td class="align-center"><%= check_box_tag 'product_ids[]', product.id, false, :class => 'product-select' %></td>
+                <td><%= product.sku %></td>
+                <td><%= product.name %></td>
+                <td><%= product.price %></td>
+                <td class="has_image"><%= product.images.any? ? image_tag('admin/icons/camera.png', :title => t("sim.has_photo")) : '' %></td>
                 <td class="actions">
                   <%= form_for product, :url => admin_product_path(product), :remote => true, :html => {:style => 'display:inline'} do |f| %>
                       <% if product.active? %>
